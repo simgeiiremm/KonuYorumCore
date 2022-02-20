@@ -19,9 +19,8 @@ GO
 CREATE TABLE [dbo].[Konu](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Baslik] [varchar](100) NOT NULL,
-	[Aciklama] [varchar](200) NULL,
-	[Tarih] [datetime] NOT NULL,
- CONSTRAINT [PK_Konu] PRIMARY KEY CLUSTERED 
+	[Aciklama] [varchar](200) NULL
+CONSTRAINT [PK_Konu] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -35,8 +34,8 @@ GO
 CREATE TABLE [dbo].[Yorum](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Icerik] [varchar](500) NOT NULL,
-	[Tarih] [datetime] NOT NULL,
 	[Yorumcu] [varchar](50) NOT NULL,
+	Puan int,
 	[KonuId] [int] NOT NULL,
  CONSTRAINT [PK_Yorum] PRIMARY KEY CLUSTERED 
 (
@@ -46,14 +45,14 @@ CREATE TABLE [dbo].[Yorum](
 GO
 SET IDENTITY_INSERT [dbo].[Konu] ON 
 
-INSERT [dbo].[Konu] ([Id], [Baslik], [Aciklama], [Tarih]) VALUES (1, N'Koronavirüs', N'COVID-19 ile ilgili gelişmeler.', CAST(N'2022-02-06T16:16:45.000' AS DateTime))
-INSERT [dbo].[Konu] ([Id], [Baslik], [Aciklama], [Tarih]) VALUES (2, N'Fenerbahçe', N'Fenerbahçe''nin son durumu.', CAST(N'2022-02-06T16:27:15.093' AS DateTime))
+INSERT [dbo].[Konu] ([Id], [Baslik], [Aciklama]) VALUES (1, N'Koronavirüs', N'COVID-19 ile ilgili gelişmeler.')
+INSERT [dbo].[Konu] ([Id], [Baslik], [Aciklama]) VALUES (2, N'Fenerbahçe', N'Fenerbahçe''nin son durumu.')
 SET IDENTITY_INSERT [dbo].[Konu] OFF
 SET IDENTITY_INSERT [dbo].[Yorum] ON 
 
-INSERT [dbo].[Yorum] ([Id], [Icerik], [Tarih], [Yorumcu], [KonuId]) VALUES (1, N'En son Omicron varyantı ortaya çıktı.', CAST(N'2022-02-06T16:27:15.093' AS DateTime), N'MasqueR', 1)
-INSERT [dbo].[Yorum] ([Id], [Icerik], [Tarih], [Yorumcu], [KonuId]) VALUES (2, N'Türkiye''de vakalar 100000''i geçti.', CAST(N'2022-02-06T16:27:15.093' AS DateTime), N'Profesör', 1)
-INSERT [dbo].[Yorum] ([Id], [Icerik], [Tarih], [Yorumcu], [KonuId]) VALUES (3, N'Fenerbahçe''nin son transferi Mesut Özil beklentileri karşılayamadı.', CAST(N'2022-02-06T16:27:15.097' AS DateTime), N'Yakışıklı', 2)
+INSERT [dbo].[Yorum] ([Id], [Icerik], [Yorumcu], Puan, [KonuId]) VALUES (1, N'En son Omicron varyantı ortaya çıktı.', N'MasqueR', 5, 1)
+INSERT [dbo].[Yorum] ([Id], [Icerik], [Yorumcu], [KonuId]) VALUES (2, N'Türkiye''de vakalar 100000''i geçti.', N'Profesör', 1)
+INSERT [dbo].[Yorum] ([Id], [Icerik], [Yorumcu], Puan, [KonuId]) VALUES (3, N'Fenerbahçe''nin son transferi Mesut Özil beklentileri karşılayamadı.', N'Yakışıklı', 1, 2)
 SET IDENTITY_INSERT [dbo].[Yorum] OFF
 ALTER TABLE [dbo].[Yorum]  WITH CHECK ADD  CONSTRAINT [FK_Yorum_Konu] FOREIGN KEY([KonuId])
 REFERENCES [dbo].[Konu] ([Id])
